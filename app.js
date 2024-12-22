@@ -80,6 +80,12 @@ const addTodo = (e) => {
 
 const deleteTodo = (e) => {
     const todo = e.target.parentElement.parentElement;
+    const text = todo.firstChild.children[1].textContent;
+
+    let todos = JSON.parse(localStorage.getItem('todos'));
+    todos = todos.filter(td => td.text !== text);
+    localStorage.setItem('todos', JSON.stringify(todos));
+
     todo.remove();
 }
 
