@@ -9,6 +9,7 @@ body {
     width: 70%;
     min-height: 100vh;
     margin: 0 auto;
+    background-color: rgb(35, 46, 83);
 }
 
 .container {
@@ -58,7 +59,7 @@ body {
 }
 
 .todo-btn:hover {
-    background-color: rgb(137, 174, 207);
+    background-color: rgb(149, 207, 137);
 }
 
 .todo-container {
@@ -95,4 +96,13 @@ body {
 .todo-cb:checked~.todo-text {
     text-decoration: line-through;
     color: gray;
+}
+
+.edit-input {
+    padding: 6px 8px;
+    font-size: 0.9rem;
+    border-radius: 4px 0 0 4px;
+    border: none;
+    outline: none;
+    margin-left: 5px;
 }

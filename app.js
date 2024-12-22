@@ -107,7 +107,8 @@ const completeTodo = (e) => {
 
 const editTodo = (e) => {
     const todo = e.target.parentElement.parentElement;
-    const text = todo.firstChild.children[1].textContent;
+    const text = todo.querySelector('.todo-text').textContent;
+    const checkVal = todo.querySelector('.todo-cb').checked;
 
     let todos = JSON.parse(localStorage.getItem('todos'));
     todos = todos.filter(td => td.text !== text);
@@ -115,7 +116,53 @@ const editTodo = (e) => {
 
     todo.remove();
 
-    input.value = text;
+    const todoDiv = document.createElement('div');
+    todoDiv.classList.add('todo');
+
+    const todoLeft = document.createElement('div');
+    todoLeft.classList.add('todo-left');
+
+    const todoRight = document.createElement('div');
+    todoRight.classList.add('todo-right');
+
+    const todoCb = document.createElement('input');
+    todoCb.type = 'checkbox';
+    todoCb.checked = checkVal;
+    todo.classList.add('todo-cb')
+
+    const todoEditInput = document.createElement('input');
+    todoEditInput.type = 'text';
+    todoEditInput.classList.add('edit-input');
+    todoEditInput.value = text;
+
+    const saveBtn = document.createElement('button');
+    saveBtn.classList.add('todo-save');
+    saveBtn.textContent = 'Save';
+
+    todoLeft.appendChild(todoCb);
+    todoLeft.appendChild(todoEditInput);
+
+    todoRight.appendChild(saveBtn);
+
+    todoDiv.appendChild(todoLeft);
+    todoDiv.appendChild(todoRight);
+
+    todoContainer.appendChild(todoDiv);
+
+    saveBtn.addEventListener('click', () => {
+        const newText = todoEditInput.value;
+        const isCompleted = todoCb.checked;
+
+        const updatedTodo = {
+            text: newText,
+            isCompleted: isCompleted,
+        };
+
+        todos.push(updatedTodo);
+        localStorage.setItem('todos', JSON.stringify(todos));
+
+        location.reload();
+    });
 
 }
 
