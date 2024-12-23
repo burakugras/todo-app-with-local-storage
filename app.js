@@ -1,48 +1,6 @@
 const form = document.querySelector('.todo-form');
 const input = document.querySelector('.todo-input');
 const todoContainer = document.querySelector('.todo-container');
-let deleteBtns;
-let checkboxes;
-let editBtns;
-
-const addHTML = (todo) => {
-    const todoDiv = document.createElement('div');
-    todoDiv.classList.add('todo');
-
-    const todoLeft = document.createElement('div');
-    todoLeft.classList.add('todo-left');
-
-    const todoCb = document.createElement('input');
-    todoCb.type = 'checkbox';
-    todoCb.checked = todo.isCompleted;
-    todoCb.classList.add('todo-cb');
-
-    const todoText = document.createElement('span');
-    todoText.classList.add('todo-text');
-    todoText.textContent = todo.text;
-
-    todoLeft.appendChild(todoCb);
-    todoLeft.appendChild(todoText);
-
-    const todoRight = document.createElement('div');
-    todoRight.classList.add('todo-right');
-
-    const deleteBtn = document.createElement('button');
-    deleteBtn.classList.add('todo-delete');
-    deleteBtn.textContent = 'Delete';
-
-    const editBtn = document.createElement('button');
-    editBtn.classList.add('todo-edit');
-    editBtn.textContent = ('Edit');
-
-    todoRight.appendChild(deleteBtn);
-    todoRight.appendChild(editBtn);
-
-    todoDiv.appendChild(todoLeft);
-    todoDiv.appendChild(todoRight);
-
-    todoContainer.appendChild(todoDiv);
-}
 
 const startConf = () => {
     //start settings
@@ -50,21 +8,24 @@ const startConf = () => {
     if (!todos) {
         localStorage.setItem('todos', JSON.stringify([]));
     } else {
-        todos.forEach((todo) => {
+        todos.forEach(todo => {
             addHTML(todo);
         })
-        deleteBtns = document.querySelectorAll('.todo-delete');
-        checkboxes = document.querySelectorAll('.todo-cb')
-        editBtns = document.querySelectorAll('.todo-edit')
     }
 }
-
-startConf();
 
 const addTodo = (e) => {
     e.preventDefault();
 
     const inputVal = input.value;
+
+    if (inputVal == '') {
+        input.style.border = '1px solid tomato';
+        setTimeout(() => {
+            input.style.borderColor = 'transparent';
+        }, 2500)
+        return false;
+    }
 
     const todo = {
         text: inputVal,
@@ -76,9 +37,7 @@ const addTodo = (e) => {
     localStorage.setItem('todos', JSON.stringify(todos));
 
     addHTML(todo);
-
     form.reset();
-
 }
 
 const deleteTodo = (e) => {
@@ -86,7 +45,7 @@ const deleteTodo = (e) => {
     const text = todo.firstChild.children[1].textContent;
 
     let todos = JSON.parse(localStorage.getItem('todos'));
-    todos = todos.filter(td => td.text !== text);
+    todos = todos.filter(td => td.text != text);
     localStorage.setItem('todos', JSON.stringify(todos));
 
     todo.remove();
@@ -105,68 +64,82 @@ const completeTodo = (e) => {
     localStorage.setItem('todos', JSON.stringify(todos));
 }
 
-const editTodo = (e) => {
+const saveTodo = (e) => {
     const todo = e.target.parentElement.parentElement;
-    const text = todo.querySelector('.todo-text').textContent;
-    const checkVal = todo.querySelector('.todo-cb').checked;
+    const prevText = todo.firstChild.children[1].textContent;
+    const newText = todo.firstChild.children[2].value;
 
     let todos = JSON.parse(localStorage.getItem('todos'));
-    todos = todos.filter(td => td.text !== text);
-    localStorage.setItem('todos', JSON.stringify(todos));
+    todos.forEach(td => {
+        if (td.text === prevText) {
+            td.text = newText;
+        }
+    })
 
-    todo.remove();
+    localStorage.setItem('todos', JSON.stringify(todos))
+    todo.firstChild.children[1].textContent = newText;
+    todo.classList.remove('-edited');
+}
 
+const editTodo = (e) => {
+    const todo = e.target.parentElement.parentElement;
+    todo.classList.add('-edited');
+
+}
+
+const addHTML = (todo) => {
     const todoDiv = document.createElement('div');
     todoDiv.classList.add('todo');
 
     const todoLeft = document.createElement('div');
     todoLeft.classList.add('todo-left');
 
-    const todoRight = document.createElement('div');
-    todoRight.classList.add('todo-right');
+    const editInput = document.createElement('input');
+    editInput.classList.add('todo-editInput');
+    editInput.defaultValue = todo.text;
 
     const todoCb = document.createElement('input');
     todoCb.type = 'checkbox';
-    todoCb.checked = checkVal;
-    todo.classList.add('todo-cb')
+    todoCb.checked = todo.isCompleted;
+    todoCb.classList.add('todo-cb');
+    todoCb.addEventListener('click', completeTodo);
 
-    const todoEditInput = document.createElement('input');
-    todoEditInput.type = 'text';
-    todoEditInput.classList.add('edit-input');
-    todoEditInput.value = text;
+    const todoText = document.createElement('span');
+    todoText.classList.add('todo-text');
+    todoText.textContent = todo.text;
+
+    todoLeft.appendChild(todoCb);
+    todoLeft.appendChild(todoText);
+    todoLeft.appendChild(editInput);
+
+    const todoRight = document.createElement('div');
+    todoRight.classList.add('todo-right');
+
+    const deleteBtn = document.createElement('button');
+    deleteBtn.classList.add('todo-delete');
+    deleteBtn.textContent = 'Delete';
+    deleteBtn.addEventListener('click', deleteTodo);
+
+    const editBtn = document.createElement('button');
+    editBtn.classList.add('todo-edit');
+    editBtn.textContent = 'Edit';
+    editBtn.addEventListener('click', editTodo);
 
     const saveBtn = document.createElement('button');
     saveBtn.classList.add('todo-save');
     saveBtn.textContent = 'Save';
+    saveBtn.addEventListener('click', saveTodo);
 
-    todoLeft.appendChild(todoCb);
-    todoLeft.appendChild(todoEditInput);
 
+    todoRight.appendChild(deleteBtn);
+    todoRight.appendChild(editBtn);
     todoRight.appendChild(saveBtn);
 
     todoDiv.appendChild(todoLeft);
     todoDiv.appendChild(todoRight);
 
     todoContainer.appendChild(todoDiv);
-
-    saveBtn.addEventListener('click', () => {
-        const newText = todoEditInput.value;
-        const isCompleted = todoCb.checked;
-
-        const updatedTodo = {
-            text: newText,
-            isCompleted: isCompleted,
-        };
-
-        todos.push(updatedTodo);
-        localStorage.setItem('todos', JSON.stringify(todos));
-
-        location.reload();
-    });
-
 }
 
+startConf();
 form.addEventListener('submit', addTodo);
-deleteBtns.forEach((btn) => btn.addEventListener('click', deleteTodo));
-checkboxes.forEach((cb) => cb.addEventListener('click', completeTodo));
-editBtns.forEach((cb) => cb.addEventListener('click', editTodo));

@@ -9,7 +9,7 @@ body {
     width: 70%;
     min-height: 100vh;
     margin: 0 auto;
-    background-color: rgb(35, 46, 83);
+    background-color: rgba(5, 5, 94, 0.822);
 }
 
 .container {
@@ -49,17 +49,16 @@ body {
 .todo-btn {
     padding: 6px 8px;
     font-size: 0.9rem;
-    border-radius: 4px;
+    border-radius: 0 4px 4px 0;
     border: none;
     outline: none;
-    border-radius: 0px 4px 4px 0;
     background-color: aliceblue;
     cursor: pointer;
     transition: 0.3s ease all;
 }
 
 .todo-btn:hover {
-    background-color: rgb(149, 207, 137);
+    background-color: rgb(208, 225, 240);
 }
 
 .todo-container {
@@ -84,8 +83,20 @@ body {
 }
 
 .todo-left {
+    position: relative;
     display: flex;
     align-items: center;
+}
+
+.todo-editInput {
+    position: absolute;
+    padding: 6px 8px;
+    font-size: 0.9rem;
+    border-radius: 4px 0 0 4px;
+    border: none;
+    outline: none;
+    opacity: 0;
+    pointer-events: none;
 }
 
 .todo-text,
@@ -98,11 +109,70 @@ body {
     color: gray;
 }
 
-.edit-input {
+.todo-right {
+    position: relative;
+}
+
+.todo-delete {
+    background-color: tomato;
     padding: 6px 8px;
     font-size: 0.9rem;
-    border-radius: 4px 0 0 4px;
+    color: white;
+    border-radius: 4px 4px;
     border: none;
     outline: none;
-    margin-left: 5px;
+    cursor: pointer;
+    transition: 0.3s ease all;
+}
+
+.todo-delete:hover {
+    background-color: rgb(255, 117, 93);
+}
+
+.todo-edit {
+    background-color: rgb(61, 224, 116);
+    padding: 6px 8px;
+    font-size: 0.9rem;
+    color: white;
+    border-radius: 4px 4px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    transition: 0.3s ease all;
+}
+
+.todo-edit:hover {
+    background-color: rgb(53, 192, 99);
+}
+
+.todo-save {
+    position: absolute;
+    right: 0;
+    background-color: rgb(61, 164, 224);
+    padding: 6px 8px;
+    font-size: 0.9rem;
+    color: white;
+    border-radius: 4px 4px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    transition: 0.3s ease all;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.todo-save:hover {
+    background-color: rgb(65, 147, 194);
+}
+
+.todo.-edited .todo-left *,
+.todo.-edited .todo-right * {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.todo.-edited .todo-left .todo-editInput,
+.todo.-edited .todo-right .todo-save {
+    opacity: 1;
+    pointer-events: all;
 }
