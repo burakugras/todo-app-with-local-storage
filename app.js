@@ -39,10 +39,6 @@ const addTodo = (e) => {
 
     if (inputVal == '') {
         showWarning();
-        // input.style.border = '1px solid tomato';
-        // setTimeout(() => {
-        //     input.style.borderColor = 'transparent';
-        // }, 2500)
         return false;
     }
 
