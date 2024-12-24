@@ -9,7 +9,7 @@ body {
     width: 70%;
     min-height: 100vh;
     margin: 0 auto;
-    background-color: rgba(5, 5, 94, 0.822);
+    background-color: rgba(11, 11, 133, 0.842);
 }
 
 .container {
@@ -17,6 +17,8 @@ body {
     margin: 0 auto;
     display: flex;
     flex-direction: column;
+    margin-top: 5vh;
+
 }
 
 .todo-form {
@@ -25,8 +27,28 @@ body {
     align-items: center;
     padding: 15px 20px;
     border-radius: 8px;
-    margin-top: 32px;
+    margin-top: 16px;
     background-color: antiquewhite;
+    position: relative;
+    z-index: 1;
+}
+
+.warning-div {
+    font-family: sans-serif;
+    font-weight: 500;
+    position: fixed; 
+    top: 20px; 
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgb(245, 153, 153);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 500px;
+    height: 50px;
+    z-index: 9999;
+    
 }
 
 .todo-title {
@@ -68,6 +90,8 @@ body {
     border-radius: 8px;
     margin-top: 16px;
     background-color: antiquewhite;
+    position: relative;
+    z-index: 1;
 }
 
 .todo {

@@ -1,6 +1,7 @@
 const form = document.querySelector('.todo-form');
 const input = document.querySelector('.todo-input');
 const todoContainer = document.querySelector('.todo-container');
+const container = document.querySelector('.container');
 
 const startConf = () => {
     //start settings
@@ -14,16 +15,34 @@ const startConf = () => {
     }
 }
 
+const showWarning = () => {
+    const warningDiv = document.createElement('div');
+    warningDiv.classList.add('warning-div');
+
+    const warningText = document.createElement('span');
+    warningText.classList.add('warning-text');
+    warningText.textContent = 'You can not leave empty input.';
+
+    warningDiv.appendChild(warningText);
+    container.prepend(warningDiv);
+
+
+    setTimeout(() => {
+        warningDiv.remove();
+    }, 2000);
+}
+
 const addTodo = (e) => {
     e.preventDefault();
 
     const inputVal = input.value;
 
     if (inputVal == '') {
-        input.style.border = '1px solid tomato';
-        setTimeout(() => {
-            input.style.borderColor = 'transparent';
-        }, 2500)
+        showWarning();
+        // input.style.border = '1px solid tomato';
+        // setTimeout(() => {
+        //     input.style.borderColor = 'transparent';
+        // }, 2500)
         return false;
     }
 
